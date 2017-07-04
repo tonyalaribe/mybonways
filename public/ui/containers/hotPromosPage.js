@@ -14,31 +14,16 @@ var HotPromosPage = {
       console.log("then called 2");
       var simple = document.querySelector('.js_slider');
       console.log("then called ", simple);
-      var loryInstance = lory(simple, {
-          rewind: true
-      });
-      setInterval(()=>{
-        loryInstance.next();
-      }, 4000)
+      // var loryInstance = lory(simple, {
+      //     rewind: true
+      // });
+      // setInterval(()=>{
+      //   loryInstance.next();
+      // }, 4000)
       // });
     })
     console.log(vnode)
     Promos.GetFeaturedPromos();
-    // let input = document.getElementById("areaInput")
-    // var autocomplete = new google.maps.places.Autocomplete(input);
-    // autocomplete.addListener('place_changed', function () {
-    //   var place = autocomplete.getPlace();
-    //   console.log(place)
-
-    //   if (!place.geometry) {
-    //     // User entered the name of a Place that was not suggested and
-    //     // pressed the Enter key, or the Place Details request failed.
-    //     console.log("No details available for input: '" + place.name + "'");
-    //     return;
-    //   }
-
-    //   m.redraw()
-    // });
   },
   view: function (vnode) {
     return (

@@ -76,7 +76,7 @@ var NewBranch = {
           (place.address_components[2] && place.address_components[2].short_name || '')
         ].join(' ');
       }
-      console.log(place.geometry?place.geometry.location.lat():"")
+      // console.log(place.geometry?place.geometry.location.lat():"")
       br.NewBranch.latitude = 0.00
       br.NewBranch.longitude = 0.00
       if (place.geometry){

@@ -2,7 +2,7 @@ import m from 'mithril';
 
 export var search = {
     page: 0,
-    searchData:"",
+    searchData: {},
     mysearch: [],
     searchFor: function (query, lat, lng) {
         // search for a particular area
