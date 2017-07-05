@@ -52,7 +52,7 @@ export var AdminModel = {
             return localforage.setItem('AuthAdmin', response.admin)
           })
           .then(function(){
-             AdminModel.GetUserfromStorage()
+            AdminModel.GetUserfromStorage()
             m.route.set("/")
 
         })

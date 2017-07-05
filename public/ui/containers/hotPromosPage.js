@@ -2,6 +2,7 @@ import m from 'mithril';
 import { search } from '../models/search.js';
 import { Promos } from '../models/promos.js';
 import { Slides } from '../models/slides.js';
+import { lory } from 'lory.js';
 
 var HotPromosPage = {
   slideIndex: 1,
@@ -14,12 +15,12 @@ var HotPromosPage = {
       console.log("then called 2");
       var simple = document.querySelector('.js_slider');
       console.log("then called ", simple);
-      // var loryInstance = lory(simple, {
-      //     rewind: true
-      // });
-      // setInterval(()=>{
-      //   loryInstance.next();
-      // }, 4000)
+      var loryInstance = lory(simple, {
+          rewind: true
+      });
+      setInterval(()=>{
+        loryInstance.next();
+      }, 4000)
       // });
     })
     console.log(vnode)
@@ -31,15 +32,19 @@ var HotPromosPage = {
         <section>
           {m.fragment(vnode.attrs, vnode.children)}
           <section class="animated">
-            <section class="bg-white ">
+            <section class="bg-white pa3">
                 <div class="slider overflow-hidden js_slider relative"  oncreate={(vnode) => {
                             vnode.dom.style.height = (vnode.dom.offsetWidth / 1.5) + "px"
                           }}>
-                  <div class="frame js_frame pa3">
+                  <div class="frame js_frame">
                     <ul class="slides js_slides pa0 ma0 w-100">
                       {Slides.AllSlides.length ?
                         Slides.AllSlides.map((slide) => {
-                          return (<li class="js_slide w-100"><a href={slide.url} class="w-100 dib v-top" oncreate={m.route.link}><img src={slide.image} class="w-100 br3" /></a></li>)
+                          return (<li class="js_slide w-100">
+                            <a href={slide.url} class="w-100 dib v-top" oncreate={m.route.link}>
+                              <img src={slide.image} class="w-100 br3" />
+                              </a>
+                            </li>)
                         })
                         : "" }
                     </ul>
