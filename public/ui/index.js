@@ -29,7 +29,7 @@ m.route(root, '/', {
   },
   '/search': {
     view: function(vnode) {
-      return m(SearchArea, vnode.attrs)
+      return m(SearchArea, vnode.attrs, m(searchNav, vnode.attrs))
     }
   },
   '/map': {

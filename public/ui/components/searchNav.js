@@ -30,8 +30,9 @@ var searchNav = {
       console.log("lat : ", lat, " lng : ", lng);
       var querystring = m.buildQueryString({q: search.searchData.item, lat: lat, lng: lng})
       searchNav.searchError = "";
+      search.searchFor(search.searchData.item, lat, lng);
       m.route.set("/search?" + querystring);
-      // m.redraw()
+      m.redraw()
     });
   },
   view: (vnode) => {
