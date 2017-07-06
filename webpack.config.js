@@ -7,6 +7,7 @@ module.exports = {
     index:"./public/ui/index.js",
     admin:"./public/admin/index.js",
     merchant:"./public/merchant/index.js",
+    user:"./public/user/index.js",
   },
   output: {
     filename: "js/[name]-bundle.js",

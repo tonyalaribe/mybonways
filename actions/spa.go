@@ -15,3 +15,7 @@ func AdminHandler(c buffalo.Context) error {
 func MerchantHandler(c buffalo.Context) error {
 	return c.Render(200, spa.HTML("merchant.html"))
 }
+
+func UserHandler(c buffalo.Context) error {
+	return c.Render(200, spa.HTML("user.html"))
+}
