@@ -49,6 +49,7 @@ func App() *buffalo.App {
 		app.GET("/", HomeHandler)
 		app.GET("/admin/{rest:.*}", AdminHandler)
 		app.GET("/merchants/{rest:.*}", MerchantHandler)
+		app.GET("/user/{rest:.*}", UserHandler)
 
 		app.ServeFiles("/assets", packr.NewBox("../public/assets"))
 
