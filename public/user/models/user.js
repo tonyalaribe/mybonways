@@ -1,6 +1,7 @@
 import m from 'mithril';
 
 export var UserModel = {
+    User: {},
     SignupUser: {},
     LoginUser: {},
     Login: () => {

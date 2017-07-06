@@ -12,5 +12,11 @@ m.route(root, '/signup', {
         view: (vnode) => {
             return m(SignupPage, vnode.attrs)
         }
+    },
+    '/reservations': {
+        view: (vnode) => {
+            return m(AdminShell, vnode.attrs,
+            m(OffCanvasMenu, vnode.attrs))
+        }
     }
 });
