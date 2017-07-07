@@ -9,6 +9,7 @@ import MapPromos from './components/mappromos.js';
 import DoublePromos from './containers/doublePromos.js';
 import MerchantPromos from './containers/merchantpromos.js';
 import SignupPage from './containers/signuppage.js';
+import {UserAuth} from './components/auth.js';
 
 var root = document.getElementById('appContainer');
 
@@ -53,6 +54,11 @@ m.route(root, '/', {
           m(MerchantPromos, vnode.attrs, m(searchNav, vnode.attrs))
         );
       },
+  },
+  '/user': {
+    view: (vnode) => {
+      return m(UserAuth, vnode.attrs, m(".bg-red.white.pa2", "USERS."))
+    }
   },
   '/signup': {
     view: (vnode) => {

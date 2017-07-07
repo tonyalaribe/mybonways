@@ -29,7 +29,6 @@ var OffCanvasMenu = {
               <a class="db pv2 ph2 bt link white-90" oncreate={m.route.link} href="/">Home</a>
               <a class="db pv2 ph2 bt ">Profile</a>
               <a class="db pv2 ph2 bt ">Favorites</a>
-              <a href="/signup" class="db pv2 ph2 bt" oncreate={m.route.link}>Signup</a>
             </div>
           </header>
         </nav>
