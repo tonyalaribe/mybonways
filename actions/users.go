@@ -5,7 +5,6 @@ import (
 	"github.com/gobuffalo/buffalo/render"
 	"github.com/markbates/pop"
 	"github.com/pkg/errors"
-	uuid "github.com/satori/go.uuid"
 	"github.com/tonyalaribe/mybonways/models"
 	"golang.org/x/crypto/bcrypt"
 )
@@ -94,9 +93,10 @@ func (v UsersResource) Create(c buffalo.Context) error {
 		return errors.WithStack(err)
 	}
 
-	verifyModel := &models.VerificationCode{}
-	verifyModel.CompanyID = user.Email
-	verifyModel.Code = uuid.NewV1().String()
+	// TODO:: VERIFICATION...
+	// verifyModel := &models.VerificationCode{}
+	// verifyModel.CompanyID = user.Email
+	// verifyModel.Code = uuid.NewV1().String()
 
 	return c.Render(200, render.JSON(user))
 }

@@ -113,7 +113,7 @@ var SignupPage = {
                       <div class="pv2">
                         <input class="input-reset ba b--black-20 db w-100 pv3 ph3" type="text" placeholder="Full Name"
                         oninput={m.withAttr("value", function(value) {
-                          UserModel.NewUser.full_name = value.trim();
+                          UserModel.NewUser.full_name = value;
                         })}
                         value={UserModel.NewUser.full_name} />
                       </div>
@@ -127,7 +127,7 @@ var SignupPage = {
                       <div class="pv2">
                         <input class="input-reset ba b--black-20 db w-100 pv3 ph3" type="password" placeholder="Password"
                         oninput={m.withAttr("value", function(value) {
-                          UserModel.NewUser.user_password = value.trim();
+                          UserModel.NewUser.user_password = value;
                         })}
                         value={UserModel.NewUser.user_password}/>
                       </div>
