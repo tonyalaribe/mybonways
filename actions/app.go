@@ -69,6 +69,7 @@ func App() *buffalo.App {
 
 		app.POST("/api/merchants/login", MerchantLogin)
 		app.POST("/api/admin/login", AdminLogin)
+		app.POST("/api/users/login", UserLogin)
 
 		app.GET("/api/featuredpromos", promoResource.ListFeaturedPromos)
 		app.GET("/api/featuredpromos/{page}", promoResource.ListFeaturedPromosPage)

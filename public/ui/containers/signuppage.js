@@ -48,7 +48,7 @@ var SignupPage = {
         SignupPage.state.signupLoader = false;
         // clear the forms
         UserModel.NewUser = {}
-
+        m.redraw();
       }).catch(function(error){
 
         SignupPage.state.signupMessage = "";
