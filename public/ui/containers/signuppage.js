@@ -64,8 +64,10 @@ var SignupPage = {
             <nav class="db pa2 shadow-4 fixed w-100" style="background-color:#F3F3F1">
               <div>
                 <div class="dib">
-                  <img src="/assets/img/logo_xs.png" class="h2 dib v-mid"/>
-          			  <span class="f3 dib v-mid pl2">my<strong>Bonways</strong></span>
+                  <a href="/" oncreate={m.route.link}>
+                    <img src="/assets/img/logo_xs.png" class="h2 dib v-mid"/>
+                    <span class="f3 dib v-mid pl2">my<strong>Bonways</strong></span>
+                  </a>
                 </div>
                 <div class="v-mid dib fr">
                   <div class="dib relative">

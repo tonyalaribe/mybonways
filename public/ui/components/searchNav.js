@@ -1,5 +1,6 @@
 import m from 'mithril';
 import {search} from '../models/search.js';
+import {UserModel} from '../models/user.js';
 import {getCookie} from '../../util/cookie.js';
 
 var searchNav = {
@@ -35,17 +36,17 @@ var searchNav = {
       m.route.set("/search?" + querystring);
       m.redraw()
     });
-    if (getCookie("X-USER-TOKEN") !== ""){
-      searchNav.Loggedin = true
-    }
+    // if (getCookie("X-USER-TOKEN") !== ""){
+    //   searchNav.Loggedin = true
+    // }
   },
-  Loggedin: false,
+  // Loggedin: false,
   view: (vnode) => {
     return (
     <section>
       <div class="flex flex-row pv1 ph2">
         <div class="flex pa1 pr3">
-          {searchNav.Loggedin?<a class="red-custom f3 pointer" onclick={() => vnode.attrs.slideout.toggle()}>☰</a>
+          {UserModel.User?<a class="red-custom f3 pointer" onclick={() => vnode.attrs.slideout.toggle()}>☰</a>
           : <a href="/signup" class="bg-white red ba b--red pa1 br2 no-underline" oncreate={m.route.link}>Signup/Login</a>}
         </div>
         <div class="flex flex-row flex-auto">
