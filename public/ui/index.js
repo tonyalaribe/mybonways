@@ -63,6 +63,13 @@ m.route(root, '/', {
       m(searchNav, vnode.attrs))))
     }
   },
+  '/dashboard/favourites': {
+    view: (vnode) => {
+      return m(UserAuth, vnode.attrs,
+      m(OffCanvasMenu,vnode.attrs, m(Dashboard, vnode.attrs,
+      m(searchNav, vnode.attrs))))
+    }
+  },
   '/signup': {
     view: (vnode) => {
         return m(SignupPage, vnode.attrs)
