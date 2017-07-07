@@ -13,24 +13,30 @@ var OffCanvasMenu = {
       'padding': 256,
       'tolerance': 70
     })
+    UserModel.GetUserfromStorage()
   },
   view:function(vnode){
     return (
       <section>
         <nav id="menu" class="white-90 bg-red-gradient shadow-inset-1">
+          {UserModel.User? 
           <header class="pv4">
             <div class="tc">
               <img src="/assets/img/user.jpg" class="w4 h4 br-100 pa1 ba bw1 b--white"/>
               <div>
-                <span class="f4">Anthony Alaribe</span>
+                <span class="f4">{UserModel.User.full_name}</span>
               </div>
             </div>
             <div class="pt4 ph4">
               <a class="db pv2 ph2 bt link white-90" oncreate={m.route.link} href="/">Home</a>
-              <a class="db pv2 ph2 bt ">Profile</a>
-              <a class="db pv2 ph2 bt ">Favorites</a>
+              <a class="db pv2 ph2 bt link" oncreate={m.route.link} href="/dashboard/profile">Profile</a>
+              <a class="db pv2 ph2 bt link" oncreate={m.route.link} href="/dashboard/favourites">Favorites</a>
+              <a class="db pv2 ph2 bt link" onclick={() => {
+                  UserModel.Logout();
+                }}>Logout</a>
             </div>
           </header>
+          : ""}
         </nav>
         <section id="panel">
           {m.fragment(vnode.attrs, vnode.children)}

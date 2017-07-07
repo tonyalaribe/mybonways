@@ -1,6 +1,6 @@
 import m from 'mithril';
 import localforage from 'localforage'
-import {getCookie} from '../../util/cookie.js';
+import {getCookie, deleteCookie} from '../../util/cookie.js';
 
 export var UserModel = {
     NewUser: {},
@@ -35,11 +35,16 @@ export var UserModel = {
           })
           .then(function(){
             UserModel.GetUserfromStorage();
-            m.route.set("/users/");
+            m.route.set("/dashboard/");
         })
     },
     Logout : () => {
-
+        localforage.removeItem("AuthUser");
+        UserModel.User = {}
+        deleteCookie("X-USER-TOKEN");
+        console.log("Cooookie deleted!");
+        m.redraw()
+        m.route.set("/");
     },
     Signup: () => {
         UserModel.NewUser.image = "";
