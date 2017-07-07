@@ -56,6 +56,7 @@ func App() *buffalo.App {
 		merchantsResource := &MerchantsResource{}
 		locationsResource := LocationsResource{&buffalo.BaseResource{}}
 		slidesResource := SlidesResource{&buffalo.BaseResource{}}
+		usersResource := UsersResource{&buffalo.BaseResource{}}
 
 		// if this is merchants the middleware does not work, so i changed it to merchant
 		merchantGroup := app.Group("/api/merchants")
@@ -107,6 +108,7 @@ func App() *buffalo.App {
 		}
 		app.GET("/api/slides", slidesResource.List)
 		adminGroup.Resource("/slides", slidesResource)
+		app.Resource("/api/users", usersResource)
 	}
 
 	return app

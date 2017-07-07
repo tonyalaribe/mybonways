@@ -40,7 +40,7 @@ var searchNav = {
     <section>
       <div class="flex flex-row pv1 ph2">
         <div class="flex pa1 pr3">
-          <a class="red-custom f3" onclick={() => vnode.attrs.slideout.toggle()}>☰</a>
+          <a class="red-custom f3 pointer" onclick={() => vnode.attrs.slideout.toggle()}>☰</a>
         </div>
         <div class="flex flex-row flex-auto">
           <div class="flex flex-auto  justify-center pa1 tc">
