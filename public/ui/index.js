@@ -8,6 +8,7 @@ import searchNav from './components/searchNav.js';
 import MapPromos from './components/mappromos.js';
 import DoublePromos from './containers/doublePromos.js';
 import MerchantPromos from './containers/merchantpromos.js';
+import SignupPage from './containers/signuppage.js';
 
 var root = document.getElementById('appContainer');
 
@@ -51,6 +52,11 @@ m.route(root, '/', {
       return m(OffCanvasMenu,vnode.attrs,
           m(MerchantPromos, vnode.attrs, m(searchNav, vnode.attrs))
         );
+      },
+  },
+  '/signup': {
+    view: (vnode) => {
+        return m(SignupPage, vnode.attrs)
       },
   }
 });
