@@ -4,23 +4,23 @@ import {getCookie, deleteCookie} from '../../util/cookie.js';
 
 export var UserModel = {
     NewUser: {},
-    User: {},
+    User: null,
     GetUserfromStorage: function(){
         console.log("user : ", UserModel.User)
-      if (!UserModel.User || !UserModel.User.email){
-          console.log("No user");
-        return localforage.getItem('AuthUser').then(function(user){
-            console.log("Got User");
-          console.log(user)
-          if (user != null){
-            UserModel.User = user
-            m.redraw()
-            return
-          }
-          UserModel.User = null
-          m.redraw()
-        })
-      }
+        if (!UserModel.User || !UserModel.User.email){
+            console.log("No user, lets look for a user");
+            return localforage.getItem('AuthUser').then(function(user){
+                console.log("Got User");
+                console.log(user)
+                if (user != null){
+                    UserModel.User = user
+                    m.redraw()
+                    return
+                }
+                UserModel.User = null
+                m.redraw()
+            })
+        }
     },
     Login : (loginUser) => {
         return m.request({
@@ -40,7 +40,7 @@ export var UserModel = {
     },
     Logout : () => {
         localforage.removeItem("AuthUser");
-        UserModel.User = {}
+        UserModel.User = null;
         deleteCookie("X-USER-TOKEN");
         console.log("Cooookie deleted!");
         m.redraw()

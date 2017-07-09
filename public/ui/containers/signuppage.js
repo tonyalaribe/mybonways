@@ -25,12 +25,14 @@ var SignupPage = {
       UserModel.Login(SignupPage.LoginUser).then(function() {
         // clear the forms
         // house keeping...
-        SignupPage.LoginUser = {}
+        SignupPage.LoginUser = null
         SignupPage.state.loginError = "";
+        SignupPage.state.signupMessage = "";
         SignupPage.state.loginLoader = false;
       }).catch(function(error){
         SignupPage.state.loginError = "Username or Password is incorrect.";
-        SignupPage.state.loginLoader = false;                              
+        SignupPage.state.loginLoader = false;
+        SignupPage.state.signupMessage = "";
       });
   },
   validateSignup: () => {
@@ -47,7 +49,7 @@ var SignupPage = {
         SignupPage.state.signupMessage = "Login to your email to verify your account.";
         SignupPage.state.signupLoader = false;
         // clear the forms
-        UserModel.NewUser = {}
+        UserModel.NewUser = null
         m.redraw();
       }).catch(function(error){
 
