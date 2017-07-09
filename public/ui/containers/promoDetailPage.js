@@ -1,5 +1,6 @@
 import m from 'mithril';
 import { Promos } from '../models/promos.js';
+import {UserModel} from '../models/user.js';
 
 var Details = {
   onbeforeremove: (vnode) => {
@@ -63,6 +64,16 @@ var PromoDetailPage = {
             <section class="pv3 f6 ph2 gray">
               <section class="pb3">
                 <div class="dib fr">
+                  <a class="pa1 bg-transparent b--light-gray bw1 ba mh1 red-custom br2"
+                  onclick={() => {
+                    if (UserModel.User) {
+                      Promos.Reserve(UserModel.User.id);
+                    } else {
+                      console.error("You must be logged in to reserve this promo.");
+                    }
+                  }}>
+                    <img src="/assets/img/svg/star.svg" class="" style="height:0.8rem;" />
+                  </a>
                   <a class="pa1 bg-transparent b--light-gray bw1 ba mh1 red-custom br2">
                     <img src="/assets/img/svg/like-hollow.svg" class="" style="height:0.8rem;" />
                   </a>

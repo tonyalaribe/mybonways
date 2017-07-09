@@ -50,7 +50,7 @@ export var UserModel = {
         UserModel.NewUser.image = "";
         return m.request({
             method: "POST",
-            url: "/api/users",
+            url: "/api/users/signup",
             data: UserModel.NewUser
         }).then((response) => {
             console.log("response: ", response);
