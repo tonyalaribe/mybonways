@@ -64,7 +64,7 @@ var PromoDetailPage = {
               <section class="pb3">
                 <div class="dib fr">
                   <a class="pa1 bg-transparent b--light-gray bw1 ba mh1 red-custom br2">
-                    <img src="/assets/img/svg/like-block.svg" class="" style="height:0.8rem;" />
+                    <img src="/assets/img/svg/like-hollow.svg" class="" style="height:0.8rem;" />
                   </a>
                   <a class="pa1 bg-transparent b--light-gray bw1 ba mh1 red-custom br2">
                     <img src="/assets/img/svg/call.svg" class="" style="height:0.8rem;" />

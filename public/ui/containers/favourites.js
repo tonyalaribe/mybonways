@@ -1,4 +1,5 @@
 import m from 'mithril';
+import {UserModel} from '../models/user.js';
 
 var Favourites = {
     oncreate: () => {
