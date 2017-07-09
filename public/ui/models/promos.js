@@ -54,5 +54,15 @@ export var Promos = {
         }).catch((error) => {
             console.error("Promos merchant error: ", error)
         })
+    },
+    Reserve: (id) => {
+        console.log("Reserve this promo. UserID: ", id);
+        return m.request({
+            method: "POST",
+            url: "/api/promos/reserve",
+            data: Promos.Promo
+        }).then((response) => {
+            console.log("reserve response: ", response);
+        })
     }
 }

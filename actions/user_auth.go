@@ -1,6 +1,7 @@
 package actions
 
 import (
+	"encoding/json"
 	"log"
 	"net/http"
 	"time"
@@ -66,6 +67,68 @@ func UserLogin(c buffalo.Context) error {
 
 	http.SetCookie(c.Response(), cookie)
 	return c.Render(http.StatusOK, render.JSON(token))
+}
+
+func UserLoginCheckMiddleware(next buffalo.Handler) buffalo.Handler {
+	log.Println("LOGIN MIDDLEWARE")
+	return func(c buffalo.Context) error {
+		req := c.Request()
+		if req.Method != "GET" {
+			b, err := json.Marshal(req.Form)
+			if err == nil {
+				log.Println("not get")
+				c.LogField("form", string(b))
+			}
+		}
+		b, err := json.Marshal(c.Params())
+		if err == nil {
+			c.LogField("params", string(b))
+		}
+
+		cookie, err := req.Cookie("X-USER-TOKEN")
+		if err != nil {
+			c.LogField("auth", "not authenticated. No cookie")
+			return c.Error(http.StatusForbidden, errors.WithStack(err))
+		}
+
+		tokenValue := cookie.Value
+		log.Println("tokenValue: ", tokenValue)
+		// validate the token
+		token, err := jwt.Parse(tokenValue, func(token *jwt.Token) (interface{}, error) {
+			publicKey, err := jwt.ParseRSAPublicKeyFromPEM(encryption.Bytes("public.pub"))
+
+			if err != nil {
+				return publicKey, err
+			}
+			return publicKey, nil
+		})
+
+		// branch out into the possible error from signing
+		switch err.(type) {
+
+		case nil: // no error
+			if !token.Valid { // but may still be invalid
+				log.Println("invalid token: ", err)
+				return c.Error(http.StatusForbidden, errors.WithStack(err))
+			}
+
+			if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
+				log.Printf("\nUser is set... %T \n %#v\n", claims["User"], claims["User"])
+
+				c.Set("User", claims["User"])
+			} else {
+				log.Println("not ok: ", err)
+				return c.Error(http.StatusForbidden, errors.WithStack(err))
+			}
+			return next(c)
+		default: // something else went wrong
+			// log.Printf("error: %#v", err)
+			log.Println("error: ", err)
+			return c.Error(http.StatusForbidden, errors.WithStack(err))
+		}
+
+		// return next(c)
+	}
 }
 
 // GenerateUserJWT generates a jwt token for the user

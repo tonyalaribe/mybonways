@@ -173,3 +173,8 @@ func (v UsersResource) Destroy(c buffalo.Context) error {
 	// Redirect to the users index page
 	return c.Redirect(302, "/users")
 }
+
+func (v UsersResource) ReservePromo(c buffalo.Context) error {
+	
+	return nil
+}

@@ -65,6 +65,9 @@ func App() *buffalo.App {
 		adminGroup := app.Group("/api/admins")
 		adminGroup.Use(AdminLoginCheckMiddleware)
 
+		// userGroup := app.Group("/api/user")
+		// userGroup.Use(UserLoginCheckMiddleware)
+
 		app.GET("/api/merchants/verify/{code}", VerifyMerchant)
 
 		app.POST("/api/merchants/login", MerchantLogin)
@@ -103,13 +106,15 @@ func App() *buffalo.App {
 		admin.Use(AdminLoginCheckMiddleware)
 		admin.Resource("/", AdminsResource{&buffalo.BaseResource{}})
 
+		app.GET("/api/slides", slidesResource.List)
+		adminGroup.Resource("/slides", slidesResource)
+		app.POST("/api/users/signup", usersResource.Create)
+
 		app.ErrorHandlers[404] = func(status int, err error, c buffalo.Context) error {
 			c.Render(200, spa.HTML("index.html"))
 			return nil
 		}
-		app.GET("/api/slides", slidesResource.List)
-		adminGroup.Resource("/slides", slidesResource)
-		app.Resource("/api/users", usersResource)
+		app.Resource("/api/reservations", ReservationsResource{&buffalo.BaseResource{}})
 	}
 
 	return app
