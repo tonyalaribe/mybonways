@@ -36,8 +36,11 @@ var searchNav = {
       m.route.set("/search?" + querystring);
       m.redraw()
     });
-    // if (getCookie("X-USER-TOKEN") !== ""){
-    //   searchNav.Loggedin = true
+    // var cookie = getCookie("X-USER-TOKEN");
+    // if (cookie === ""){
+    //   console.log("X-USER-TOKEN: ", cookie, " user:", UserModel.User);
+    // } else {
+    //   console.log(cookie)
     // }
   },
   // Loggedin: false,
@@ -46,8 +49,7 @@ var searchNav = {
     <section>
       <div class="flex flex-row pv1 ph2">
         <div class="flex pa1 pr3">
-          {UserModel.User?<a class="red-custom f3 pointer" onclick={() => vnode.attrs.slideout.toggle()}>☰</a>
-          : <a href="/signup" class="bg-white red ba b--red pa1 br2 no-underline" oncreate={m.route.link}>Signup/Login</a>}
+          <a class="red-custom f3 pointer" onclick={() => vnode.attrs.slideout.toggle()}>☰</a>
         </div>
         <div class="flex flex-row flex-auto">
           <div class="flex flex-auto  justify-center pa1 tc">
