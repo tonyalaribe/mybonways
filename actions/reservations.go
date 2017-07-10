@@ -39,7 +39,7 @@ func (v ReservationsResource) List(c buffalo.Context) error {
 
 	// You can order your list here. Just change
 	// err := tx.Where("user_id = ?", user["id"]).All(reservations)
-	err := tx.RawQuery(`SELECT id, created_at, updated_at, user_id, promo_id, promo_slug
+	err := tx.RawQuery(`SELECT id, created_at, updated_at, user_id, promo_id, promo_slug,
 	item_name, company_id, category, old_price, new_price, start_date, end_date, description,
 	promo_images, featured_image, code, featured_image_b64, slug, company_id as cid FROM reservations r
 	LEFT OUTER JOIN (
@@ -197,4 +197,26 @@ func (v ReservationsResource) isReserved(c buffalo.Context) error {
 	}
 
 	return c.Render(http.StatusOK, render.JSON(reservation))
+}
+
+func (v ReservationsResource) GetMerchantReservations(c buffalo.Context) error {
+	// Get the DB connection from the context
+	tx := c.Value("tx").(*pop.Connection)
+	reservations := &[]models.MerchantReservationStruct{}
+	merchant := c.Value("Merchant").(map[string]interface{})
+
+	// You can order your list here. Just change
+	// err := tx.Where("user_id = ?", user["id"]).All(reservations)
+	err := tx.RawQuery(`SELECT id, created_at, updated_at, user_id,
+	promo_id, promo_slug, company_id, code, item_name, email
+	FROM reservations r
+		LEFT OUTER JOIN ( SELECT id as pid, item_name FROM merchant_promos ) p ON r.promo_id = p.pid
+		LEFT OUTER JOIN ( SELECT id as uid, email FROM users ) u ON r.user_id = u.uid
+	WHERE r.company_id = ? ORDER BY r.created_at DESC;`, merchant["company_id"]).All(reservations)
+	// to:
+	// err := tx.Order("create_at desc").All(reservations)
+	if err != nil {
+		return errors.WithStack(err)
+	}
+	return c.Render(http.StatusOK, render.JSON(reservations))
 }

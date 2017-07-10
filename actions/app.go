@@ -89,6 +89,8 @@ func App() *buffalo.App {
 		merchantGroup.Resource("/branch", &BranchResource{})
 		merchantGroup.Resource("/promo", promoResource)
 
+		merchantGroup.GET("/reservations", reservationResource.GetMerchantReservations)
+
 		app.Resource("/api/merchants", merchantsResource)
 
 		app.Resource("/api/categories", CategoriesResource{&buffalo.BaseResource{}})
