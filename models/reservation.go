@@ -46,6 +46,20 @@ type ReservationStruct struct {
 	Slug             string    `json:"slug" db:"slug"`
 }
 
+type MerchantReservationStruct struct {
+	ID        uuid.UUID `json:"id" db:"id"`
+	CreatedAt time.Time `json:"created_at" db:"created_at"`
+	UpdatedAt time.Time `json:"updated_at" db:"updated_at"`
+	UserID    uuid.UUID `json:"user_id" db:"user_id"`
+	PromoID   uuid.UUID `json:"promo_id" db:"promo_id"`
+	PromoSlug string    `json:"promo_slug" db:"promo_slug"`
+	Code      string    `json:"code" db:"code"`
+	CompanyID string    `json:"company_id" db:"company_id"`
+
+	Email    string `json:"email" db:"email"`
+	ItemName string `json:"item_name" db:"item_name"`
+}
+
 // String is not required by pop and may be deleted
 func (r Reservation) String() string {
 	jr, _ := json.Marshal(r)

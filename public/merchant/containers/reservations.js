@@ -1,6 +1,14 @@
 import m from 'mithril';
+import {MerchantModel} from '../models/merchant.js';
 
 var Reservations = {
+    oncreate: () => {
+        MerchantModel.GetReservations().then(()=> {
+            
+        }).catch((error) => {
+            console.log("Merchants Reservation error: ", error);
+        })
+    },
     view: () => {
         return (
             <section class="">
@@ -17,11 +25,24 @@ var Reservations = {
                                 <th class="fw6 bb b--black-20 tl pb3 pr3 bg-white tc">Code</th>
                                 <th class="fw6 bb b--black-20 tl pb3 pr3 bg-white tc">Date</th>
                                 <th class="fw6 bb b--black-20 tl pb3 pr3 bg-white tc">Item Name</th>
-                                <th class="fw6 bb b--black-20 tl pb3 pr3 bg-white tc">Country</th>
-                                <th class="fw6 bb b--black-20 tl pb3 pr3 bg-white tc">Edit</th>
+                                <th class="fw6 bb b--black-20 tl pb3 pr3 bg-white tc">Customer Email</th>
+                                {/*<th class="fw6 bb b--black-20 tl pb3 pr3 bg-white tc">Edit</th>*/}
                             </thead>
                             <tbody>
-
+                            {MerchantModel.Reservations.length?
+                            MerchantModel.Reservations.map((reservation, i) => {
+                                return (
+                                    <tr>
+                                        <td class="pv3 pr3 bb b--black-20 tc">{i+1}</td>
+                                        <td class="pv3 pr3 bb b--black-20 tc">{reservation.code}</td>
+                                        <td class="pv3 pr3 bb b--black-20 tc">{reservation.created_at}</td>
+                                        <td class="pv3 pr3 bb b--black-20 tc">{reservation.item_name}</td>
+                                        <td class="pv3 pr3 bb b--black-20 tc">{reservation.email}</td>
+                                        {/*<td class="pv3 pr3 bb b--black-20 tc">{i+1}</td>*/}
+                                    </tr>
+                                )
+                            })
+                            :""}
                             </tbody>
                         </table>
                     </div>
