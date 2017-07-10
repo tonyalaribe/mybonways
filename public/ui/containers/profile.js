@@ -23,12 +23,11 @@ var Profile = {
                                     <p class="underline">{UserModel.User.email}</p>
                                 </div>
                                 <div class="cf">
-                                    <span class="fl">Reservations <span class="underline">4</span></span>
+                                    <span class="">Reservations: <span class="underline">{UserModel.Reservations?UserModel.Reservations.length : "0"}</span></span>
                                 </div>
                             </div>
                         </div>
-                    </section>
-                     : ""}
+                    </section> : ""}
                 </div>
             </section>
         )
