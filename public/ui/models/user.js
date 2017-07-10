@@ -5,6 +5,7 @@ import {getCookie, deleteCookie} from '../../util/cookie.js';
 export var UserModel = {
     NewUser: {},
     User: null,
+    Reservations: null,
     GetUserfromStorage: function(){
         console.log("user : ", UserModel.User)
         if (getCookie("X-USER-TOKEN") !== ""){

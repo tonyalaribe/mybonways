@@ -6,7 +6,7 @@ import { getCookie } from '../../util/cookie.js';
 export var UserAuth = {
  oncreate:function(){
    UserModel.GetUserfromStorage().then(()=>{
-
+    UserModel.GetReservations();
    }).catch((error) => {
      console.error(error)
    })

@@ -34,11 +34,19 @@ type ReservationsResource struct {
 func (v ReservationsResource) List(c buffalo.Context) error {
 	// Get the DB connection from the context
 	tx := c.Value("tx").(*pop.Connection)
-	reservations := &models.Reservations{}
+	reservations := &[]models.ReservationStruct{}
 	user := c.Value("user").(map[string]interface{})
 
 	// You can order your list here. Just change
-	err := tx.Where("user_id = ?", user["id"]).All(reservations)
+	// err := tx.Where("user_id = ?", user["id"]).All(reservations)
+	err := tx.RawQuery(`SELECT id, created_at, updated_at, user_id, promo_id, promo_slug
+	item_name, company_id, category, old_price, new_price, start_date, end_date, description,
+	promo_images, featured_image, featured_image_b64, slug FROM reservations r
+	LEFT OUTER JOIN (
+		SELECT id as pid, item_name, company_id, category, old_price, new_price, start_date, end_date, description,
+		promo_images, featured_image, featured_image_b64, slug FROM merchant_promos
+	) p
+	ON r.promo_id = p.pid WHERE r.user_id = ? ORDER BY r.created_at DESC;`, user["id"]).All(reservations)
 	// to:
 	// err := tx.Order("create_at desc").All(reservations)
 	if err != nil {
