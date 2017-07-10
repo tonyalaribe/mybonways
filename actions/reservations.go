@@ -41,9 +41,9 @@ func (v ReservationsResource) List(c buffalo.Context) error {
 	// err := tx.Where("user_id = ?", user["id"]).All(reservations)
 	err := tx.RawQuery(`SELECT id, created_at, updated_at, user_id, promo_id, promo_slug
 	item_name, company_id, category, old_price, new_price, start_date, end_date, description,
-	promo_images, featured_image, featured_image_b64, slug FROM reservations r
+	promo_images, featured_image, code, featured_image_b64, slug, company_id as cid FROM reservations r
 	LEFT OUTER JOIN (
-		SELECT id as pid, item_name, company_id, category, old_price, new_price, start_date, end_date, description,
+		SELECT id as pid, item_name, category, old_price, new_price, start_date, end_date, description,
 		promo_images, featured_image, featured_image_b64, slug FROM merchant_promos
 	) p
 	ON r.promo_id = p.pid WHERE r.user_id = ? ORDER BY r.created_at DESC;`, user["id"]).All(reservations)
@@ -90,6 +90,9 @@ func (v ReservationsResource) Create(c buffalo.Context) error {
 	if err != nil {
 		return errors.WithStack(err)
 	}
+
+	reservation.Code = RandStringBytes(5)
+
 	// Get the DB connection from the context
 	tx := c.Value("tx").(*pop.Connection)
 	// Validate the data from the html form

@@ -47,7 +47,7 @@ var Dashboard = {
                             </a>
                         </div>
                         )
-                    }) : <p>No Reservations yet.</p>}
+                    }) : <p class="tc">You have no Reservation</p>}
                 </div>
             </section>
         )

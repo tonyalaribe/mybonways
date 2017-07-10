@@ -10,6 +10,7 @@ var MenuComponent = {
         <a class="dn pa2 bb b--light-gray hover-bg-light-gray link navy " href="/" oncreate={m.route.link}>Dashboard</a>
         <a class="db pa2 bb b--light-gray hover-bg-light-gray link navy" href="/promos/" oncreate={m.route.link}>Promos</a>
         <a class="db pa2 bb b--light-gray hover-bg-light-gray link navy" href="/branches" oncreate={m.route.link}>Branches</a>
+        <a class="db pa2 bb b--light-gray hover-bg-light-gray link navy" href="/reservations" oncreate={m.route.link}>Reservations</a>
       </div>
     );
   }

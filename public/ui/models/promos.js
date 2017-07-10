@@ -69,7 +69,7 @@ export var Promos = {
         return m.request({
             method: "POST",
             url: "/api/reservations",
-            data: {user_id: id, promo_id: Promos.Promo.id, promo_slug: Promos.Promo.slug}
+            data: {user_id: id, promo_id: Promos.Promo.id, promo_slug: Promos.Promo.slug, company_id: Promos.Promo.company_id}
         }).then((response) => {
             console.log("reserve response: ", response);
             Promos.Promo.reservation = response;
