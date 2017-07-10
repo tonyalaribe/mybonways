@@ -17,6 +17,8 @@ type Reservation struct {
 	UserID    uuid.UUID `json:"user_id" db:"user_id"`
 	PromoID   uuid.UUID `json:"promo_id" db:"promo_id"`
 	PromoSlug string    `json:"promo_slug" db:"promo_slug"`
+	Code      string    `json:"code" db:"code"`
+	CompanyID string    `json:"company_id" db:"company_id"`
 }
 
 type ReservationStruct struct {
@@ -26,6 +28,8 @@ type ReservationStruct struct {
 	UserID    uuid.UUID `json:"user_id" db:"user_id"`
 	PromoID   uuid.UUID `json:"promo_id" db:"promo_id"`
 	PromoSlug string    `json:"promo_slug" db:"promo_slug"`
+	Code      string    `json:"code" db:"code"`
+	CID       string    `json:"cid" db:"cid"`
 
 	ItemName         string    `json:"item_name" db:"item_name"`
 	CompanyID        string    `json:"company_id" db:"company_id"`
@@ -62,6 +66,8 @@ func (r Reservations) String() string {
 func (r *Reservation) Validate(tx *pop.Connection) (*validate.Errors, error) {
 	return validate.Validate(
 		&validators.StringIsPresent{Field: r.PromoSlug, Name: "PromoSlug"},
+		&validators.StringIsPresent{Field: r.Code, Name: "Code"},
+		&validators.StringIsPresent{Field: r.CompanyID, Name: "CompanyID"},
 	), nil
 }
 
