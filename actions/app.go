@@ -57,6 +57,7 @@ func App() *buffalo.App {
 		locationsResource := LocationsResource{&buffalo.BaseResource{}}
 		slidesResource := SlidesResource{&buffalo.BaseResource{}}
 		usersResource := UsersResource{&buffalo.BaseResource{}}
+		reservationResource := ReservationsResource{&buffalo.BaseResource{}}
 
 		// if this is merchants the middleware does not work, so i changed it to merchant
 		merchantGroup := app.Group("/api/merchants")
@@ -67,6 +68,9 @@ func App() *buffalo.App {
 
 		// userGroup := app.Group("/api/user")
 		// userGroup.Use(UserLoginCheckMiddleware)
+
+		reservationsGroup := app.Group("/api/reservations")
+		reservationsGroup.Use(UserLoginCheckMiddleware)
 
 		app.GET("/api/merchants/verify/{code}", VerifyMerchant)
 
@@ -114,7 +118,9 @@ func App() *buffalo.App {
 			c.Render(200, spa.HTML("index.html"))
 			return nil
 		}
-		app.Resource("/api/reservations", ReservationsResource{&buffalo.BaseResource{}})
+		reservationsGroup.Resource("/", reservationResource)
+		reservationsGroup.GET("/isreserved/{promo_id}", reservationResource.isReserved)
+		// reservationsResources.GET("/")
 	}
 
 	return app

@@ -7,7 +7,7 @@ export var UserModel = {
     User: null,
     GetUserfromStorage: function(){
         console.log("user : ", UserModel.User)
-        if (!UserModel.User || !UserModel.User.email){
+        if (getCookie("X-USER-TOKEN") !== ""){
             console.log("No user, lets look for a user");
             return localforage.getItem('AuthUser').then(function(user){
                 console.log("Got User");
@@ -19,6 +19,10 @@ export var UserModel = {
                 }
                 UserModel.User = null
                 m.redraw()
+            })
+        } else {
+            return new Promise((resolve, reject) => {
+                reject("Not logged in");
             })
         }
     },
@@ -34,9 +38,33 @@ export var UserModel = {
             return localforage.setItem('AuthUser', response.user)
           })
           .then(function(){
-            UserModel.GetUserfromStorage();
-            m.route.set("/dashboard/");
+            UserModel.GetUserfromStorage().then(()=>{
+                m.route.set("/dashboard/");
+            }).catch((error) => {
+                console.error(error)
+            })
+            
         })
+    },
+    isReserved: (id) => {
+        console.log("promo id");
+        return m.request({
+            method: "GET",
+            url: "/api/reservations/isreserved/" + id
+        })
+    },
+    GetReservations: () => {
+        return m.request({
+            method: "GET",
+            url: "/api/reservations",
+            data: {}
+        }).then((response) => {
+            console.log("reservations response: ", response);
+            UserModel.Reservations = response;
+        }).catch((error) => {
+            console.log("reservations error: ", error);
+        })
+        // UserModel.User.id
     },
     Logout : () => {
         localforage.removeItem("AuthUser");

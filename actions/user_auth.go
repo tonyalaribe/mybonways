@@ -113,9 +113,9 @@ func UserLoginCheckMiddleware(next buffalo.Handler) buffalo.Handler {
 			}
 
 			if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
-				log.Printf("\nUser is set... %T \n %#v\n", claims["User"], claims["User"])
+				log.Printf("\nUser is set... %T \n %#v\n Claims: %#v", claims["user"], claims["user"], claims)
 
-				c.Set("User", claims["User"])
+				c.Set("user", claims["user"])
 			} else {
 				log.Println("not ok: ", err)
 				return c.Error(http.StatusForbidden, errors.WithStack(err))

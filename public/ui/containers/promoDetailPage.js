@@ -43,8 +43,10 @@ var Locations = {
 var PromoDetailPage = {
   oncreate: function (vnode) {
     console.log("vnode")
+    // UserModel.GetUserfromStorage();
     Promos.GetPromo(vnode.attrs.slug);
   },
+  ReserveStatus: false,
   tab: "Details",
   view: function (vnode) {
     let CurrentPromo = Promos.Promo;
@@ -55,7 +57,6 @@ var PromoDetailPage = {
           <section class="cf">
             <section class="bg-white ">
               <div class="w-100 cover overflow-hidden" id="featured_image" style={"background-image:url(" + Promos.Promo.featured_image_b64 + ");min-height:150px"} oncreate={(vnode) => {
-
                 vnode.dom.style.height = (vnode.dom.offsetWidth / 1.5) + "px"
               }}>
                 <img src={Promos.Promo.featured_image} class="w-100 " />
@@ -64,12 +65,23 @@ var PromoDetailPage = {
             <section class="pv3 f6 ph2 gray">
               <section class="pb3">
                 <div class="dib fr">
-                  <a class="pa1 bg-transparent b--light-gray bw1 ba mh1 red-custom br2"
+                  <a class={(Promos.Promo.reservation? " bg-red " : " bg-transparent " ) + " pa1 b--light-gray bw1 ba mh1 red-custom br2"}
                   onclick={() => {
                     if (UserModel.User) {
-                      Promos.Reserve(UserModel.User.id);
+                      if (!Promos.Promo.reservation) {
+                        Promos.Reserve(UserModel.User.id).then(() => {
+                            {/*Promos.Promo.reservation = {}*/}
+                        }).catch((error) => {
+                            console.log("Reserve error: ", error);
+                            Promos.Promo.reservation = null;
+                        })
+                      } else {
+                        Promos.unReserve().then((response) => {
+                          Promos.Promo.reservation = null;
+                        })
+                      }
                     } else {
-                      console.error("You must be logged in to reserve this promo.");
+                      console.error("Cannot reserve this promo.");
                     }
                   }}>
                     <img src="/assets/img/svg/star.svg" class="" style="height:0.8rem;" />

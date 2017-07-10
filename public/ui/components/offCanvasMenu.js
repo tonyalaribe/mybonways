@@ -13,7 +13,11 @@ var OffCanvasMenu = {
       'padding': 256,
       'tolerance': 70
     })
-    UserModel.GetUserfromStorage()
+    UserModel.GetUserfromStorage().then(()=>{
+
+    }).catch((error) => {
+      console.error(error)
+    })
   },
   view:function(vnode){
     return (
