@@ -37,19 +37,19 @@ var SignupPage = {
   },
   validateSignup: () => {
       if(!UserModel.NewUser.full_name || !UserModel.NewUser.email || !UserModel.NewUser.user_password) {
-          
+
           SignupPage.state.signupMessage = "";
           SignupPage.state.signupError = "All required fields must be provided.";
           return;
       }
       SignupPage.state.signupLoader = true;
       UserModel.Signup().then(() => {
-        
+
         SignupPage.state.signupError = "";
         SignupPage.state.signupMessage = "Login to your email to verify your account.";
         SignupPage.state.signupLoader = false;
         // clear the forms
-        UserModel.NewUser = null
+        UserModel.NewUser = {}
         m.redraw();
       }).catch(function(error){
 
