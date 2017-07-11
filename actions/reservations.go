@@ -92,7 +92,7 @@ func (v ReservationsResource) Create(c buffalo.Context) error {
 	}
 
 	reservation.Code = RandStringBytes(5)
-
+	reservation.Status = "pending"
 	// Get the DB connection from the context
 	tx := c.Value("tx").(*pop.Connection)
 	// Validate the data from the html form

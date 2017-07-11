@@ -79,6 +79,7 @@ func (v UsersResource) Create(c buffalo.Context) error {
 	if err != nil {
 		return errors.WithStack(err)
 	}
+
 	user.Approved = false
 	user.UserPassword, err = bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.DefaultCost)
 	if err != nil {
@@ -87,6 +88,8 @@ func (v UsersResource) Create(c buffalo.Context) error {
 	user.Password = ""
 	c.Logger().Infof("User: %#v \n ", user)
 	tx := c.Value("tx").(*pop.Connection)
+
+	user.Provider = "email"
 
 	err = tx.Create(user)
 	if err != nil {
@@ -172,9 +175,4 @@ func (v UsersResource) Destroy(c buffalo.Context) error {
 	c.Flash().Add("success", "User was destroyed successfully")
 	// Redirect to the users index page
 	return c.Redirect(302, "/users")
-}
-
-func (v UsersResource) ReservePromo(c buffalo.Context) error {
-	
-	return nil
 }

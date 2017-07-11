@@ -20,6 +20,7 @@ type User struct {
 	UserPassword []byte    `json:"-" db:"password"`
 	Password     string    `json:"user_password" db:"-"`
 	Image        string    `json:"image" db:"image"`
+	Provider     string    `json:"provider" db:"provider"`
 }
 
 // String is not required by pop and may be deleted
@@ -45,6 +46,7 @@ func (u *User) Validate(tx *pop.Connection) (*validate.Errors, error) {
 		&validators.StringIsPresent{Field: u.Email, Name: "Email"},
 		&validators.StringIsPresent{Field: u.Password, Name: "Password"},
 		&validators.StringIsPresent{Field: u.Image, Name: "Image"},
+		&validators.StringIsPresent{Field: u.Provider, Name: "Provider"},
 	), nil
 }
 

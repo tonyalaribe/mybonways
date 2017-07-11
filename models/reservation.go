@@ -19,6 +19,7 @@ type Reservation struct {
 	PromoSlug string    `json:"promo_slug" db:"promo_slug"`
 	Code      string    `json:"code" db:"code"`
 	CompanyID string    `json:"company_id" db:"company_id"`
+	Status    string    `json:"status" db:"status"`
 }
 
 type ReservationStruct struct {
@@ -30,6 +31,7 @@ type ReservationStruct struct {
 	PromoSlug string    `json:"promo_slug" db:"promo_slug"`
 	Code      string    `json:"code" db:"code"`
 	CID       string    `json:"cid" db:"cid"`
+	Status    string    `json:"status" db:"status"`
 
 	ItemName         string    `json:"item_name" db:"item_name"`
 	CompanyID        string    `json:"company_id" db:"company_id"`
@@ -55,6 +57,7 @@ type MerchantReservationStruct struct {
 	PromoSlug string    `json:"promo_slug" db:"promo_slug"`
 	Code      string    `json:"code" db:"code"`
 	CompanyID string    `json:"company_id" db:"company_id"`
+	Status    string    `json:"status" db:"status"`
 
 	Email    string `json:"email" db:"email"`
 	ItemName string `json:"item_name" db:"item_name"`
@@ -82,6 +85,7 @@ func (r *Reservation) Validate(tx *pop.Connection) (*validate.Errors, error) {
 		&validators.StringIsPresent{Field: r.PromoSlug, Name: "PromoSlug"},
 		&validators.StringIsPresent{Field: r.Code, Name: "Code"},
 		&validators.StringIsPresent{Field: r.CompanyID, Name: "CompanyID"},
+		&validators.StringIsPresent{Field: r.Status, Name: "Status"},
 	), nil
 }
 

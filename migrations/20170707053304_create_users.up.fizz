@@ -5,4 +5,5 @@ create_table("users", func(t) {
 	t.Column("email", "string", {})
 	t.Column("password", "string", {})
 	t.Column("image", "string", {})
+	t.Column("provider", "string", {})
 })

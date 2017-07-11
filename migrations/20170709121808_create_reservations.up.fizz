@@ -5,4 +5,5 @@ create_table("reservations", func(t) {
 	t.Column("code", "string", {})
 	t.Column("promo_id", "uuid", {})
 	t.Column("promo_slug", "string", {})
+	t.Column("status", "string", {})
 })

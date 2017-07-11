@@ -265,6 +265,7 @@ var _ = grift.Add("db:seed:user", func(c *grift.Context) error {
 		Email:    "john@doe.com",
 		Password: "password",
 		Image:    "",
+		Provider: "email",
 	}
 	user.UserPassword, err = bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.DefaultCost)
 	if err != nil {
