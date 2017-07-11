@@ -1,11 +1,12 @@
 import m from 'mithril';
 import localforage from 'localforage'
 import {getCookie, deleteCookie} from '../../util/cookie.js';
+import {isEmptyObject} from '../../util/utils.js';
 
 export var UserModel = {
     NewUser: {},
-    User: null,
-    Reservations: null,
+    User: {},
+    Reservations: [],
     GetUserfromStorage: function(){
         console.log("user : ", UserModel.User)
         if (getCookie("X-USER-TOKEN") !== ""){
@@ -13,12 +14,12 @@ export var UserModel = {
             return localforage.getItem('AuthUser').then(function(user){
                 console.log("Got User");
                 console.log(user)
-                if (user != null){
+                if (!isEmptyObject(user)){
                     UserModel.User = user
                     m.redraw()
                     return
                 }
-                UserModel.User = null
+                UserModel.User = {}
                 m.redraw()
             })
         } else {
@@ -57,8 +58,7 @@ export var UserModel = {
     GetReservations: () => {
         return m.request({
             method: "GET",
-            url: "/api/reservations",
-            data: {}
+            url: "/api/reservations"
         }).then((response) => {
             console.log("reservations response: ", response);
             UserModel.Reservations = response;
@@ -69,7 +69,7 @@ export var UserModel = {
     },
     Logout : () => {
         localforage.removeItem("AuthUser");
-        UserModel.User = null;
+        UserModel.User = {};
         deleteCookie("X-USER-TOKEN");
         console.log("Cooookie deleted!");
         m.redraw()

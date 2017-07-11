@@ -1,5 +1,6 @@
 import m from 'mithril';
 import {UserModel} from '../models/user.js';
+import {isEmptyObject} from '../../util/utils.js';
 
 var SignupPage = {
   NewUser:{},
@@ -25,7 +26,7 @@ var SignupPage = {
       UserModel.Login(SignupPage.LoginUser).then(function() {
         // clear the forms
         // house keeping...
-        SignupPage.LoginUser = null
+        SignupPage.LoginUser = {}
         SignupPage.state.loginError = "";
         SignupPage.state.signupMessage = "";
         SignupPage.state.loginLoader = false;

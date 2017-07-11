@@ -65,13 +65,6 @@ m.route(root, '/', {
       m(Dashboard, vnode.attrs, m(searchNav, vnode.attrs))))
     }
   },
-  '/dashboard/profile': {
-    view: (vnode) => {
-      return m(UserAuth, vnode.attrs,
-      m(OffCanvasMenu,vnode.attrs,
-      m(Profile, vnode.attrs, m(searchNav, vnode.attrs))))
-    }
-  },
   '/dashboard/favourites': {
     view: (vnode) => {
       return m(UserAuth, vnode.attrs,

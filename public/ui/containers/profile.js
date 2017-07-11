@@ -8,7 +8,7 @@ var Profile = {
     view: (vnode) => {
         return (
             <section class="">
-                {m.fragment(vnode.attrs, vnode.children)}
+                {/*{m.fragment(vnode.attrs, vnode.children)}*/}
                 <div class="pa2">
                     {UserModel.User?
                     <section class="tc">

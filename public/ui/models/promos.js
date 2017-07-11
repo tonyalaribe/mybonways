@@ -3,7 +3,7 @@ import {UserModel} from './user.js';
 
 export var Promos = {
     FeaturedPromos : [],
-    Promo: {promo_images:"", reservation: null},
+    Promo: {promo_images:"", reservation: {}},
     PromoMerchant: {},
     Page: 1,
     GetFeaturedPromos: () => {
@@ -83,7 +83,7 @@ export var Promos = {
             // data: Promos.Promo
         }).then((response) => {
             console.log("delete reservation response: ", response);
-            Promos.Promo.reservation = null;
+            Promos.Promo.reservation = {};
             m.redraw();
         }).catch((error) => {
             console.log("delete reservation error: ", error)

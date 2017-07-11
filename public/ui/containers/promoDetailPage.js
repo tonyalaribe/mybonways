@@ -1,6 +1,7 @@
 import m from 'mithril';
 import { Promos } from '../models/promos.js';
 import {UserModel} from '../models/user.js';
+import {isEmptyObject} from '../../util/utils.js';
 
 var Details = {
   onbeforeremove: (vnode) => {
@@ -65,19 +66,19 @@ var PromoDetailPage = {
             <section class="pv3 f6 ph2 gray">
               <section class="pb3">
                 <div class="dib fr">
-                  <a class={(Promos.Promo.reservation? " bg-red " : " bg-transparent " ) + " pa1 b--light-gray bw1 ba mh1 red-custom br2"}
+                  <a class={(!isEmptyObject(Promos.Promo.reservation)? " bg-red " : " bg-transparent " ) + " pa1 b--light-gray bw1 ba mh1 red-custom br2"}
                   onclick={() => {
-                    if (UserModel.User) {
-                      if (!Promos.Promo.reservation) {
+                    if (!isEmptyObject(UserModel.User)) {
+                      if (isEmptyObject(Promos.Promo.reservation)) {
                         Promos.Reserve(UserModel.User.id).then(() => {
                             {/*Promos.Promo.reservation = {}*/}
                         }).catch((error) => {
                             console.log("Reserve error: ", error);
-                            Promos.Promo.reservation = null;
+                            Promos.Promo.reservation = {};
                         })
                       } else {
                         Promos.unReserve().then((response) => {
-                          Promos.Promo.reservation = null;
+                          Promos.Promo.reservation = {};
                         })
                       }
                     } else {
@@ -98,6 +99,11 @@ var PromoDetailPage = {
                 </div>
                 <div class="ph2">
                   <span class="dib red-custom pv1">{Promos.Promo.item_name}</span>
+                  {!isEmptyObject(Promos.Promo.reservation)?
+                  <div class="pt1 fr">
+                    <span>Reservation Code: </span>
+                    <span class="red">{Promos.Promo.reservation.code}</span>
+                  </div> : ""}
                   <div class="pt1">
                     <span>Original Price: </span>
                     <span>{Promos.Promo.old_price}CFA</span>
