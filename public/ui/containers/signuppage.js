@@ -118,7 +118,6 @@ var SignupPage = {
                         <input class="input-reset ba b--black-20 db w-100 pv3 ph3" type="text" placeholder="Full Name"
                         oninput={m.withAttr("value", function(value) {
                           UserModel.NewUser.full_name = value;
-                          console.log(UserModel.NewUser)
                         })}
                         value={UserModel.NewUser.full_name} />
                       </div>
@@ -138,9 +137,7 @@ var SignupPage = {
                       </div>
                       <div class="tr pv2">
                         <button class="pv2 ph4 bg-navy white-90 bw0 shadow-4 grow" onclick={function() {
-                            console.log(UserModel.NewUser)
                           SignupPage.validateSignup();
-                          console.log(UserModel.NewUser)
                         }}>{SignupPage.state.signupLoader? m(".loader") : "Signup"}</button>
                       </div>
                     </div>
