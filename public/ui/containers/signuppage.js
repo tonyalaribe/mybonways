@@ -37,19 +37,19 @@ var SignupPage = {
   },
   validateSignup: () => {
       if(!UserModel.NewUser.full_name || !UserModel.NewUser.email || !UserModel.NewUser.user_password) {
-          
+
           SignupPage.state.signupMessage = "";
           SignupPage.state.signupError = "All required fields must be provided.";
           return;
       }
       SignupPage.state.signupLoader = true;
       UserModel.Signup().then(() => {
-        
+
         SignupPage.state.signupError = "";
         SignupPage.state.signupMessage = "Login to your email to verify your account.";
         SignupPage.state.signupLoader = false;
         // clear the forms
-        UserModel.NewUser = null
+        UserModel.NewUser = {}
         m.redraw();
       }).catch(function(error){
 
@@ -118,6 +118,7 @@ var SignupPage = {
                         <input class="input-reset ba b--black-20 db w-100 pv3 ph3" type="text" placeholder="Full Name"
                         oninput={m.withAttr("value", function(value) {
                           UserModel.NewUser.full_name = value;
+                          console.log(UserModel.NewUser)
                         })}
                         value={UserModel.NewUser.full_name} />
                       </div>
@@ -137,7 +138,9 @@ var SignupPage = {
                       </div>
                       <div class="tr pv2">
                         <button class="pv2 ph4 bg-navy white-90 bw0 shadow-4 grow" onclick={function() {
+                            console.log(UserModel.NewUser)
                           SignupPage.validateSignup();
+                          console.log(UserModel.NewUser)
                         }}>{SignupPage.state.signupLoader? m(".loader") : "Signup"}</button>
                       </div>
                     </div>

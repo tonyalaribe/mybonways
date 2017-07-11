@@ -1,11 +1,11 @@
 import m from 'mithril';
-import moment from 'moment';
 import {MerchantModel} from '../models/merchant.js';
+import format from 'date-fns/format';
 
 var Reservations = {
     oncreate: () => {
         MerchantModel.GetReservations().then(()=> {
-            
+
         }).catch((error) => {
             console.log("Merchants Reservation error: ", error);
         })
@@ -36,7 +36,7 @@ var Reservations = {
                                     <tr>
                                         <td class="pv3 pr3 bb b--black-20 tc">{i+1}</td>
                                         <td class="pv3 pr3 bb b--black-20 tc">{reservation.code}</td>
-                                        <td class="pv3 pr3 bb b--black-20 tc">{moment(reservation.created_at).format("L")}</td>
+                                        <td class="pv3 pr3 bb b--black-20 tc">{format(reservation.created_at,"YYYY-MM-DD")}</td>
                                         <td class="pv3 pr3 bb b--black-20 tc">{reservation.item_name}</td>
                                         <td class="pv3 pr3 bb b--black-20 tc">{reservation.email}</td>
                                         {/*<td class="pv3 pr3 bb b--black-20 tc">{i+1}</td>*/}
