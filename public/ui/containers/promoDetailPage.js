@@ -49,11 +49,13 @@ var Locations = {
 				{Promos.PromoBranches.length?Promos.PromoBranches.map((branch, i) => {
 					return (
 						<div class="pa2 dib">
-							<div class="shadow-4 pa2">
-								<p class="">
-									{branch.address} <br/> {branch.country}
-								</p>
-							</div>
+							<a target="_blank" href={"https://www.google.com/maps/dir/?api=1&destination="+branch.latitude+","+ branch.longitude}>
+								<div class="shadow-4 pa2">
+									<p class="">
+										{branch.address} <br/> {branch.country}
+									</p>
+								</div>
+							</a>
 						</div>
 					)
 				}): ""}
