@@ -56,6 +56,7 @@ func App() *buffalo.App {
 		merchantsResource := &MerchantsResource{}
 		locationsResource := LocationsResource{&buffalo.BaseResource{}}
 		slidesResource := SlidesResource{&buffalo.BaseResource{}}
+		branchResources := &BranchResource{}
 
 		// if this is merchants the middleware does not work, so i changed it to merchant
 		merchantGroup := app.Group("/api/merchants")
@@ -76,6 +77,7 @@ func App() *buffalo.App {
 
 		app.GET("/api/promo/{slug}", promoResource.GetPromoBySlug)
 		app.GET("/api/merchant/{company_id}", merchantsResource.GetByCompanyID)
+		app.GET("/api/promo/branches/{company_id}", branchResources.GetBranchByCompanyID)
 
 		merchantGroup.Resource("/branch", &BranchResource{})
 		merchantGroup.Resource("/promo", promoResource)

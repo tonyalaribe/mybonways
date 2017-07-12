@@ -1,12 +1,13 @@
 import m from 'mithril';
 import { Promos } from '../models/promos.js';
+import {isEmptyObject} from '../../util/utils.js';
 
 var Details = {
   onbeforeremove: (vnode) => {
-    vnode.dom.classList.add("slideOutLeft")
-    return new Promise(function (resolve) { setTimeout(resolve, 1000) })
+    vnode.dom.classList.add("fadeOut")
+    return new Promise(function (resolve) { setTimeout(resolve, 500) })
   },
-  oncreate: (vnode) => { vnode.dom.classList.add("slideInRight") },
+  oncreate: (vnode) => { vnode.dom.classList.add("fadeIn") },
   view: () => {
     var promo_images = Promos.Promo.promo_images.split(",").map(function (pi, i) {
       if (pi === "" || pi === " ") { return }
@@ -20,33 +21,54 @@ var Details = {
 
 var Map = {
   onbeforeremove: (vnode) => {
-    vnode.dom.classList.add("slideOutLeft")
-    return new Promise(function (resolve) { setTimeout(resolve, 1000) })
+    vnode.dom.classList.add("fadeOut");
+    return new Promise(function (resolve) { setTimeout(resolve, 500) })
   },
-  oncreate: (vnode) => { vnode.dom.classList.add("slideInRight") },
+  oncreate: (vnode) => {
+    vnode.dom.classList.add("fadeIn");
+  },
   view: () => {
     return (<div class="red animated"> <p>Maps Goes Here with GPS coordinate of the branches...</p> </div>)
   }
 }
+
 var Locations = {
   onbeforeremove: (vnode) => {
-    vnode.dom.classList.add("slideOutLeft")
+    vnode.dom.classList.add("fadeOut");
     return new Promise(function (resolve) { setTimeout(resolve, 1000) })
   },
-  oncreate: (vnode) => { vnode.dom.classList.add("slideInRight") },
-  view: () => {
-    return (<div class="red animated"> <p>Locations Goes here!</p> </div>)
-  }
+  oncreate: (vnode) => {
+	console.log("Oncreate locations...")
+    vnode.dom.classList.add("fadeIn");
+  },
+	view: (vnode) => {
+		console.log("Promos.Promo: ", Promos.Promo);
+		return (
+			<div class="red animated">
+				<p>All branches you can find this promo.</p>
+				{Promos.PromoBranches.length?Promos.PromoBranches.map((branch, i) => {
+					return (
+						<div class="pa2 dib">
+							<div class="shadow-4 pa2">
+								<p class="">
+									{branch.address} <br/> {branch.country}
+								</p>
+							</div>
+						</div>
+					)
+				}): ""}
+			</div>
+		)
+	}
 }
 
 var PromoDetailPage = {
   oncreate: function (vnode) {
-    console.log("vnode")
-    Promos.GetPromo(vnode.attrs.slug);
+	console.log("Oncreate promodetailspage...")
+    Promos.GetPromo(vnode.attrs.slug)
   },
-  tab: "Details",
+  tab: "Locations",
   view: function (vnode) {
-    let CurrentPromo = Promos.Promo;
     return (
       <section>
         <section>
@@ -54,7 +76,6 @@ var PromoDetailPage = {
           <section class="cf">
             <section class="bg-white ">
               <div class="w-100 cover overflow-hidden" id="featured_image" style={"background-image:url(" + Promos.Promo.featured_image_b64 + ");min-height:150px"} oncreate={(vnode) => {
-
                 vnode.dom.style.height = (vnode.dom.offsetWidth / 1.5) + "px"
               }}>
                 <img src={Promos.Promo.featured_image} class="w-100 " />
@@ -74,14 +95,14 @@ var PromoDetailPage = {
                   </a>
                 </div>
                 <div class="ph2">
-                  <span class="dib red-custom pv1">{Promos.Promo.item_name}</span>
+                  <span class="dib red-custom pv1">{Promos.Promo.old_price?Promos.Promo.item_name:""}</span>
                   <div class="pt1">
                     <span>Original Price: </span>
-                    <span>{Promos.Promo.old_price}CFA</span>
+                    <span>{Promos.Promo.old_price?Promos.Promo.old_price:""}CFA</span>
                   </div>
                   <div class="pt1">
                     <span>Current Price: </span>
-                    <span>{Promos.Promo.new_price}CFA</span>
+                    <span>{Promos.Promo.old_price?Promos.Promo.new_price:""}CFA</span>
                   </div>
                 </div>
               </section>
@@ -93,12 +114,12 @@ var PromoDetailPage = {
                         PromoDetailPage.tab = "Details";
                       }}>Details</button>
                   </div>
-                  <div class="flex flex-auto  justify-center tc">
+                  {/*<div class="flex flex-auto  justify-center tc">
                     <button class={(PromoDetailPage.tab == "Map" ? "bg-red-custom white" : "bg-white ") + " pa1 dib w-100 ba b--transparent pointer mh1"}
                       onclick={() => {
                         PromoDetailPage.tab = "Map";
                       }}>Map</button>
-                  </div>
+                  </div>*/}
                   <div class="flex flex-auto  justify-center tc">
                     <button class={(PromoDetailPage.tab == "Locations" ? "bg-red-custom white" : "bg-white ") + " pa1 dib w-100 ba b--transparent pointer"}
                       onclick={() => {
@@ -108,9 +129,8 @@ var PromoDetailPage = {
                 </div>
                 <div class="pa1">
                   {PromoDetailPage.tab == "Details" ? m(Details) : ""}
-                  {PromoDetailPage.tab == "Map" ? m(Map) : ""}
-                  {PromoDetailPage.tab == "Locations" ? m(Locations) : ""}
-                  {/*<Details/>*/}
+                  {/*{PromoDetailPage.tab == "Map" ? m(Map) : ""}*/}
+                  {PromoDetailPage.tab == "Locations" ? m(Locations, vnode) : ""}
                 </div>
               </section>
             </section>

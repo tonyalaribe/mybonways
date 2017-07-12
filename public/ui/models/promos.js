@@ -3,6 +3,7 @@ import m from 'mithril';
 export var Promos = {
     FeaturedPromos : [],
     Promo: {promo_images:""},
+    PromoBranches: [],
     PromoMerchant: {},
     Page: 1,
     GetFeaturedPromos: () => {
@@ -40,6 +41,7 @@ export var Promos = {
             Promos.Promo = response;
             m.redraw();
             Promos.GetPromoMerchant(response.company_id);
+            Promos.GetBranches();
         }).catch((error) => {
             console.error("promos details error: ", error)
         })
@@ -53,6 +55,15 @@ export var Promos = {
             Promos.PromoMerchant = response;
         }).catch((error) => {
             console.error("Promos merchant error: ", error)
+        })
+    },
+    GetBranches: () => {
+        return m.request({
+            method: "GET",
+            url: "/api/promo/branches/" + Promos.Promo.company_id
+        }).then((response) => {
+            console.log("Promo branches response: ", response);
+            Promos.PromoBranches = response;
         })
     }
 }
