@@ -1,5 +1,6 @@
 import m from 'mithril';
 import {UserModel} from '../models/user.js';
+import {isEmptyObject} from '../../util/utils.js';
 
 var Favourites = {
     oncreate: () => {
@@ -10,7 +11,7 @@ var Favourites = {
             <section>
                 {m.fragment(vnode.attrs, vnode.children)}
                 <div class="">
-                    {UserModel.User?
+                    {!isEmptyObject(UserModel.User)?
                     <section>
                         <h2 class="red-custom">Favourites</h2>
                     </section>

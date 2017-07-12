@@ -1,6 +1,7 @@
 import m from 'mithril';
 import Slideout from 'slideout';
 import {UserModel} from '../models/user.js';
+import {isEmptyObject} from '../../util/utils.js';
 
 var slideout;
 
@@ -23,7 +24,7 @@ var OffCanvasMenu = {
     return (
       <section>
         <nav id="menu" class="white-90 bg-red-gradient shadow-inset-1">
-          {UserModel.User?
+          {!isEmptyObject(UserModel.User)?
           <header class="pv4">
             <div class="tc">
               <img src="/assets/img/user.jpg" class="w4 h4 br-100 pa1 ba bw1 b--white"/>

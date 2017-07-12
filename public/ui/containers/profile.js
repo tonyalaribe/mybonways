@@ -1,5 +1,6 @@
 import m from 'mithril';
 import {UserModel} from '../models/user.js';
+import {isEmptyObject} from '../../util/utils.js';
 
 var Profile = {
     oncreate: () => {
@@ -10,7 +11,7 @@ var Profile = {
             <section class="">
                 {/*{m.fragment(vnode.attrs, vnode.children)}*/}
                 <div class="pa2">
-                    {UserModel.User?
+                    {!isEmptyObject(UserModel.User)?
                     <section class="tc">
                         <h2 class="red-custom">Profile</h2>
                         <div class="ba b--light-gray shadow-4 pv2 ph5 dib">
