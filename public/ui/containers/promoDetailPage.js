@@ -19,19 +19,6 @@ var Details = {
   }
 }
 
-var Map = {
-  onbeforeremove: (vnode) => {
-    vnode.dom.classList.add("fadeOut");
-    return new Promise(function (resolve) { setTimeout(resolve, 500) })
-  },
-  oncreate: (vnode) => {
-    vnode.dom.classList.add("fadeIn");
-  },
-  view: () => {
-    return (<div class="red animated"> <p>Maps Goes Here with GPS coordinate of the branches...</p> </div>)
-  }
-}
-
 var Locations = {
   onbeforeremove: (vnode) => {
     vnode.dom.classList.add("fadeOut");
