@@ -31,7 +31,8 @@ var SignupPage = {
         SignupPage.state.signupMessage = "";
         SignupPage.state.loginLoader = false;
       }).catch(function(error){
-        SignupPage.state.loginError = "Username or Password is incorrect.";
+        console.log("Login error: ", error)
+        SignupPage.state.loginError = error.Error || "Username or Password is incorrect.";
         SignupPage.state.loginLoader = false;
         SignupPage.state.signupMessage = "";
       });
@@ -53,9 +54,9 @@ var SignupPage = {
         UserModel.NewUser = {}
         m.redraw();
       }).catch(function(error){
-
+        console.error("Signup error: ", error)
         SignupPage.state.signupMessage = "";
-        SignupPage.state.signupError = "Could not sign you up at this moment please try again.";
+        SignupPage.state.signupError = error.Error? error.Error : "Could not sign you up at this moment please try again.";
         SignupPage.state.signupLoader = false;
 
       });

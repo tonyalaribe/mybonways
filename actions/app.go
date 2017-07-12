@@ -73,6 +73,7 @@ func App() *buffalo.App {
 		reservationsGroup.Use(UserLoginCheckMiddleware)
 
 		app.GET("/api/merchants/verify/{code}", VerifyMerchant)
+		app.GET("/api/users/verify/{code}", VerifyUser)
 
 		app.POST("/api/merchants/login", MerchantLogin)
 		app.POST("/api/admin/login", AdminLogin)

@@ -42,7 +42,9 @@ func UserLogin(c buffalo.Context) error {
 		log.Println("err", err)
 		return c.Error(http.StatusNotFound, errors.WithStack(err))
 	}
-
+	if !u.Approved {
+		return c.Render(http.StatusUnauthorized, render.JSON(struct{ Error string }{"Account has not been verified"}))
+	}
 	// check if the password is correct:
 	err = bcrypt.CompareHashAndPassword(u.UserPassword, []byte(login.Password))
 	if err != nil {

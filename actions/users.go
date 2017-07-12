@@ -1,10 +1,15 @@
 package actions
 
 import (
+	"net/http"
+
+	"log"
+
 	"github.com/gobuffalo/buffalo"
 	"github.com/gobuffalo/buffalo/render"
 	"github.com/markbates/pop"
 	"github.com/pkg/errors"
+	uuid "github.com/satori/go.uuid"
 	"github.com/tonyalaribe/mybonways/models"
 	"golang.org/x/crypto/bcrypt"
 )
@@ -80,28 +85,86 @@ func (v UsersResource) Create(c buffalo.Context) error {
 		return errors.WithStack(err)
 	}
 
+	tx := c.Value("tx").(*pop.Connection)
+	err = tx.Where("email = ?", user.Email).First(user)
+	if err == nil {
+		log.Println("User exists: ", user)
+		return c.Render(http.StatusBadRequest, render.JSON(struct{ Error string }{Error: "Email already Exists"}))
+	}
+
+	// VERIFICATION...
+	verifyModel := &models.VerificationCode{}
+	verifyModel.CompanyID = user.Email
+	verifyModel.Code = uuid.NewV1().String()
+	log.Printf("\nUser Verification code: %s\n", verifyModel.Code)
+
+	err = tx.Create(verifyModel)
+	if err != nil {
+		return c.Error(http.StatusBadRequest, errors.New("Invalid Request"))
+	}
+
+	// log.Println("There is no error: user: ", user)
 	user.Approved = false
 	user.UserPassword, err = bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.DefaultCost)
 	if err != nil {
 		return errors.WithStack(err)
 	}
-	user.Password = ""
+	// user.Password = ""
+	user.Image = "-"
 	c.Logger().Infof("User: %#v \n ", user)
-	tx := c.Value("tx").(*pop.Connection)
 
 	user.Provider = "email"
 
-	err = tx.Create(user)
+	verrs, err := tx.ValidateAndCreate(user, "Password", "Image")
 	if err != nil {
 		return errors.WithStack(err)
 	}
 
-	// TODO:: VERIFICATION...
-	// verifyModel := &models.VerificationCode{}
-	// verifyModel.CompanyID = user.Email
-	// verifyModel.Code = uuid.NewV1().String()
+	if verrs.HasAny() {
+		log.Println(verrs.Error())
+		return c.Error(http.StatusBadRequest, errors.New("Invalid Request"))
+	}
 
 	return c.Render(200, render.JSON(user))
+}
+
+func VerifyUser(c buffalo.Context) error {
+	code := c.Param("code")
+	log.Printf("code: %#v \n ", code)
+	v := models.VerificationCode{}
+	tx := c.Value("tx").(*pop.Connection)
+	query := pop.Q(tx)
+	query = tx.Where("code = ?", code)
+
+	err := query.First(&v)
+	if err != nil {
+		return c.Error(http.StatusOK, errors.WithStack(err))
+	}
+
+	log.Printf("verification: %#v \n ", v)
+
+	query2 := pop.Q(tx)
+	query2 = tx.Where("email = ?", v.CompanyID)
+
+	u := &models.User{}
+	err = query2.First(u)
+	if err != nil {
+		return c.Error(http.StatusOK, errors.WithStack(err))
+	}
+
+	u.Approved = true
+	err = tx.Update(u)
+	log.Println(err)
+	if err != nil {
+		return c.Error(http.StatusOK, errors.WithStack(err))
+	}
+
+	err = tx.Reload(u)
+	if err != nil {
+		return errors.WithStack(err)
+	}
+
+	return c.Render(200, render.JSON(u))
 }
 
 // Edit renders a edit formular for a user. This function is
