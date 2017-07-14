@@ -273,9 +273,55 @@ func (v LocationsResource) UpdateNeighbourhood(c buffalo.Context) error {
 }
 
 func (v LocationsResource) UpdateCountry(c buffalo.Context) error {
-	return nil
+	country := c.Param("country")
+	// Get the DB connection from the context
+	tx := c.Value("tx").(*pop.Connection)
+	// Allocate an empty Location
+	location := &models.Location{}
+	// Bind location to the html form elements
+	err := c.Bind(location)
+	if err != nil {
+		return err
+	}
+
+	if location.Country == "" {
+		return c.Render(http.StatusBadRequest, r.JSON(location))
+	}
+
+	err = tx.RawQuery("UPDATE locations SET country = ? WHERE country = ?",
+		location.Country, country).Exec()
+	if err != nil {
+		log.Printf("\nUPdate query error: %s\n", err.Error)
+		return err
+	}
+	log.Printf("No update error")
+	return c.Render(201, r.JSON(location))
 }
 
 func (v LocationsResource) UpdateCity(c buffalo.Context) error {
-	return nil
+	country := c.Param("country")
+	city := c.Param("city")
+	// Get the DB connection from the context
+	tx := c.Value("tx").(*pop.Connection)
+	// Allocate an empty Location
+	location := &models.Location{}
+	// Bind location to the html form elements
+	err := c.Bind(location)
+	if err != nil {
+		return err
+	}
+
+	if location.City == "" {
+		return c.Render(http.StatusBadRequest, r.JSON(location))
+	}
+
+	err = tx.RawQuery("UPDATE locations SET city = ? WHERE country = ? AND city = ?",
+		location.City, country, city).Exec()
+	if err != nil {
+		log.Printf("\nUPdate query error: %s\n", err.Error)
+		return err
+	}
+	log.Printf("No update error")
+	return c.Render(201, r.JSON(location))
+
 }
