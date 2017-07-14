@@ -47,7 +47,9 @@ func App() *buffalo.App {
 		app.Use(T.Middleware())
 
 		app.GET("/", HomeHandler)
+		app.GET("/admin", AdminHandler)
 		app.GET("/admin/{rest:.*}", AdminHandler)
+		app.GET("/merchants", MerchantHandler)
 		app.GET("/merchants/{rest:.*}", MerchantHandler)
 
 		app.ServeFiles("/assets", packr.NewBox("../public/assets"))
@@ -57,6 +59,8 @@ func App() *buffalo.App {
 		locationsResource := LocationsResource{&buffalo.BaseResource{}}
 		slidesResource := SlidesResource{&buffalo.BaseResource{}}
 		branchResources := &BranchResource{}
+		usersResource := UsersResource{&buffalo.BaseResource{}}
+		reservationResource := ReservationsResource{&buffalo.BaseResource{}}
 
 		// if this is merchants the middleware does not work, so i changed it to merchant
 		merchantGroup := app.Group("/api/merchants")
@@ -65,10 +69,18 @@ func App() *buffalo.App {
 		adminGroup := app.Group("/api/admins")
 		adminGroup.Use(AdminLoginCheckMiddleware)
 
+		// userGroup := app.Group("/api/user")
+		// userGroup.Use(UserLoginCheckMiddleware)
+
+		reservationsGroup := app.Group("/api/reservations")
+		reservationsGroup.Use(UserLoginCheckMiddleware)
+
 		app.GET("/api/merchants/verify/{code}", VerifyMerchant)
+		app.GET("/api/users/verify/{code}", VerifyUser)
 
 		app.POST("/api/merchants/login", MerchantLogin)
 		app.POST("/api/admin/login", AdminLogin)
+		app.POST("/api/users/login", UserLogin)
 
 		app.GET("/api/featuredpromos", promoResource.ListFeaturedPromos)
 		app.GET("/api/featuredpromos/{page}", promoResource.ListFeaturedPromosPage)
@@ -82,6 +94,8 @@ func App() *buffalo.App {
 		merchantGroup.Resource("/branch", &BranchResource{})
 		merchantGroup.Resource("/promo", promoResource)
 
+		merchantGroup.GET("/reservations", reservationResource.GetMerchantReservations)
+
 		app.Resource("/api/merchants", merchantsResource)
 
 		app.Resource("/api/categories", CategoriesResource{&buffalo.BaseResource{}})
@@ -89,13 +103,19 @@ func App() *buffalo.App {
 		// This handles adding a location by the admin...
 		adminGroup.Resource("/locations/neighbourhood", locationsResource)
 
+		locationsGroup := app.Group("/api/locations")
+		locationsGroup.Use(AdminLoginCheckMiddleware)
 		// these handle queries for all locations (country, city and neighbourhood)
 		// gets list of countries...
 		app.GET("/api/locations/countries", locationsResource.GetCountries)
-		// gets list of cities of a particular country: /api/cities?country=country_name
+		// gets list of cities of a particular country: /api/locations/cities?country=country_name
 		app.GET("/api/locations/cities", locationsResource.GetCities)
-		// gets list of neighbourhoods of a particular city in a country: /api/cities?country=country_name&city=city_name
+		// gets list of neighbourhoods of a particular city in a country: /api/locations/neighbourhood?country=country_name&city=city_name
 		app.GET("/api/locations/neighbourhood", locationsResource.GetNeighbourhood)
+
+		locationsGroup.PUT("/neighbourhood", locationsResource.UpdateNeighbourhood)
+		locationsGroup.PUT("/country", locationsResource.UpdateCountry)
+		locationsGroup.PUT("/city", locationsResource.UpdateCity)
 
 		adminGroup.Resource("/merchants", merchantsResource)
 
@@ -103,12 +123,17 @@ func App() *buffalo.App {
 		admin.Use(AdminLoginCheckMiddleware)
 		admin.Resource("/", AdminsResource{&buffalo.BaseResource{}})
 
+		app.GET("/api/slides", slidesResource.List)
+		adminGroup.Resource("/slides", slidesResource)
+		app.POST("/api/users/signup", usersResource.Create)
+
 		app.ErrorHandlers[404] = func(status int, err error, c buffalo.Context) error {
 			c.Render(200, spa.HTML("index.html"))
 			return nil
 		}
-		app.GET("/api/slides", slidesResource.List)
-		adminGroup.Resource("/slides", slidesResource)
+		reservationsGroup.Resource("/", reservationResource)
+		reservationsGroup.GET("/isreserved/{promo_id}", reservationResource.isReserved)
+		// reservationsResources.GET("/")
 	}
 
 	return app

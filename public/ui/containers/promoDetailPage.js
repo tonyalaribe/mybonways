@@ -1,5 +1,6 @@
 import m from 'mithril';
 import { Promos } from '../models/promos.js';
+import {UserModel} from '../models/user.js';
 import {isEmptyObject} from '../../util/utils.js';
 
 var Details = {
@@ -53,10 +54,12 @@ var Locations = {
 
 var PromoDetailPage = {
   oncreate: function (vnode) {
-	console.log("Oncreate promodetailspage...")
-    Promos.GetPromo(vnode.attrs.slug)
+    console.log("vnode")
+    // UserModel.GetUserfromStorage();
+    Promos.GetPromo(vnode.attrs.slug);
   },
-  tab: "Locations",
+  ReserveStatus: false,
+  tab: "Details",
   view: function (vnode) {
     return (
       <section>
@@ -73,8 +76,29 @@ var PromoDetailPage = {
             <section class="pv3 f6 ph2 gray">
               <section class="pb3">
                 <div class="dib fr">
+                  <a class={(!isEmptyObject(Promos.Promo.reservation)? " bg-red-custom " : " bg-transparent " ) + " pa1 b--light-gray bw1 ba mh1 red-custom br2"}
+                  onclick={() => {
+                    if (!isEmptyObject(UserModel.User)) {
+                      if (isEmptyObject(Promos.Promo.reservation)) {
+                        Promos.Reserve(UserModel.User.id).then(() => {
+                            {/*Promos.Promo.reservation = {}*/}
+                        }).catch((error) => {
+                            console.log("Reserve error: ", error);
+                            Promos.Promo.reservation = {};
+                        })
+                      } else {
+                        Promos.unReserve().then((response) => {
+                          Promos.Promo.reservation = {};
+                        })
+                      }
+                    } else {
+                      console.error("Cannot reserve this promo.");
+                    }
+                  }}>
+                    <img src="/assets/img/svg/star.svg" class="" style="height:0.8rem;" />
+                  </a>
                   <a class="pa1 bg-transparent b--light-gray bw1 ba mh1 red-custom br2">
-                    <img src="/assets/img/svg/like-block.svg" class="" style="height:0.8rem;" />
+                    <img src="/assets/img/svg/like-hollow.svg" class="" style="height:0.8rem;" />
                   </a>
                   <a class="pa1 bg-transparent b--light-gray bw1 ba mh1 red-custom br2">
                     <img src="/assets/img/svg/call.svg" class="" style="height:0.8rem;" />
@@ -85,6 +109,11 @@ var PromoDetailPage = {
                 </div>
                 <div class="ph2">
                   <span class="dib red-custom pv1">{Promos.Promo.old_price?Promos.Promo.item_name:""}</span>
+                  {!isEmptyObject(Promos.Promo.reservation)?
+                  <div class="pt1 fr">
+                    <span>Reservation Code: </span>
+                    <span class="red">{Promos.Promo.reservation.code}</span>
+                  </div> : ""}
                   <div class="pt1">
                     <span>Original Price: </span>
                     <span>{Promos.Promo.old_price?Promos.Promo.old_price:""}CFA</span>

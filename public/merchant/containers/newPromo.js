@@ -2,7 +2,7 @@ import m from 'mithril';
 import {Promos} from '../models/promos.js';
 import {MerchantModel} from '../models/merchant.js';
 import {downscaleImage} from '../utils';
-import moment from 'moment';
+import format from 'date-fns/format';
 
 var NewPromo = {
   featuredImageChange:function(files){
@@ -103,7 +103,7 @@ var NewPromo = {
             </div>
         </div>
         <div class="pa3 pa4-ns bg-white shadow-m2 mt3 cf">
-            {NewPromo.state.newpromoError ? m("p.pa1.tc.white.bg-red.br1", NewPromo.state.newpromoError): ""}
+            {NewPromo.state.newpromoError ? m("p.pa1.tc.white.bg-red-custom.br1", NewPromo.state.newpromoError): ""}
             {NewPromo.state.newpromoMessage ? m("p.pa1.tc.white.bg-navy.br1", NewPromo.state.newpromoMessage): ""}
             <div class="pa2">
                 <label class="f4 gray pv2 dib">Item Name:</label><br></br>
@@ -147,7 +147,7 @@ var NewPromo = {
                 <label class="f4 gray pv2 dib">Start Date:</label>
                 <input type="date" class="ba b--light-silver bw1 pa2 w-100"
                 oninput={m.withAttr("value", function(value) {
-                    Promos.NewPromo.start_date = moment(value, moment.ISO_8601);
+                    Promos.NewPromo.start_date = format(value, "YYYY-MM-DD")
                 })}
                 />
             </div>
@@ -155,7 +155,7 @@ var NewPromo = {
                 <label class="f4 gray pv2 dib">End Date:</label>
                 <input type="date" class="ba b--light-silver bw1 pa2 w-100"
                 oninput={m.withAttr("value", function(value) {
-                    Promos.NewPromo.end_date = moment(value, moment.ISO_8601);
+                    Promos.NewPromo.end_date = format(value, "YYYY-MM-DD")
                 })}
                 />
             </div>
