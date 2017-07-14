@@ -30,6 +30,20 @@ export var LocationModel = {
             console.error("Update Location Error: ", error)
         })
     },
+    UpdateCountry: () => {
+        return m.request({
+            method: "PUT",
+            url: "/api/locations/country",
+            data: {}
+        })
+    },
+    UpdateCity: () => {
+        return m.request({
+            method: "PUT",
+            url: "/api/locations/city",
+            data: {}
+        })
+    },
     GetCountries: () => {
         return m.request({
             method: "GET",

@@ -120,6 +120,13 @@ var Locations = {
                                 LocationModel.NewLocationUpdate.country = value;
                             })}
                             value={LocationModel.LocationUpdate.country}/>
+                            <div class="tc pv2">
+                                <button class="bg-navy white ba b--transparent br1 shadow-4 pa2 pointer"
+                                onclick={() => {
+                                    console.log("Update location.");
+                                    LocationModel.UpdateCountry();
+                                }}>Update Country</button>
+                            </div>
                         </div>
                         <div class="w-third-ns pa1 dib-ns">
                             <input type="text" class="pa2 ba b--light-silver w-100" placeholder=""
@@ -127,6 +134,13 @@ var Locations = {
                                 LocationModel.NewLocationUpdate.city = value;
                             })}
                             value={LocationModel.LocationUpdate.city}/>
+                            <div class="tc pv2">
+                                <button class="bg-navy white ba b--transparent br1 shadow-4 pa2 pointer"
+                                onclick={() => {
+                                    console.log("Update location.");
+                                    LocationModel.UpdateCity();
+                                }}>Update City</button>
+                            </div>
                         </div>
                         <div class="w-third-ns pa1 dib-ns">
                             <input type="text" class="pa2 ba b--light-silver w-100" placeholder=""
@@ -135,14 +149,14 @@ var Locations = {
                                 LocationModel.NewLocationUpdate.neighbourhood = value;
                             })}
                             value={LocationModel.LocationUpdate.neighbourhood}/>
+                            <div class="tc pv2">
+                                <button class="bg-navy white ba b--transparent br1 shadow-4 pa2 pointer"
+                                onclick={() => {
+                                    console.log("Update location.");
+                                    LocationModel.UpdateNeighbourhood();
+                                }}>Update Neighbourhood</button>
+                            </div>
                         </div>
-                    </div>
-                    <div class="tc pv2">
-                        <button class="bg-navy white ba b--transparent br1 shadow-4 pa2 w4 pointer"
-                        onclick={() => {
-                            console.log("Update location.");
-                            LocationModel.UpdateNeighbourhood();
-                        }}>Update</button>
                     </div>
                 </section>
             </section>
