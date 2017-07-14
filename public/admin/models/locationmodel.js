@@ -18,6 +18,7 @@ export var LocationModel = {
     LocationUpdate: {},
     NewLocationUpdate: {},
     UpdateNeighbourhood: () => {
+        if (!LocationModel.NewLocationUpdate.neighbourhood) return new Promise((resolve, reject) => reject("No neighbourhood changes") )
         var location = LocationModel.LocationUpdate
         return m.request({
             method: "PUT",
@@ -31,17 +32,25 @@ export var LocationModel = {
         })
     },
     UpdateCountry: () => {
+        if (!LocationModel.NewLocationUpdate.country) return new Promise((resolve, reject) => reject("No country changes") )
         return m.request({
             method: "PUT",
-            url: "/api/locations/country",
-            data: {}
+            url: "/api/locations/country?country=" + LocationModel.LocationUpdate.country,
+            data: LocationModel.NewLocationUpdate
+        }).then((response) =>{
+            console.log("Update Country Response: ", response);
+            LocationModel.GetCountries();
         })
     },
     UpdateCity: () => {
+        if (!LocationModel.NewLocationUpdate.city) return new Promise((resolve, reject) => reject("No city changes") )
+            
         return m.request({
             method: "PUT",
-            url: "/api/locations/city",
-            data: {}
+            url: "/api/locations/city?country=" + LocationModel.LocationUpdate.country + "&city=" + LocationModel.LocationUpdate.city,
+            data: LocationModel.NewLocationUpdate
+        }).then((response) =>{
+            console.log("Update city Response: ", response);
         })
     },
     GetCountries: () => {

@@ -69,7 +69,7 @@ var Locations = {
                             onchange={(e) => {
                                 console.log("E: ", e.target.value)
                                 LocationModel.LocationUpdate.country = e.target.value;
-                                LocationModel.NewLocationUpdate.country = e.target.value;
+                                document.getElementById("new_country").value = e.target.value;
                                 // go and retrieve the cities for this country:
                                 LocationModel.GetCities(e.target.value)
                             }}>
@@ -86,8 +86,8 @@ var Locations = {
                             onchange={(e) => {
                                 console.log("E: ", e.target.value)
                                 LocationModel.LocationUpdate.city = e.target.value;
-                                LocationModel.NewLocationUpdate.city = e.target.value;
-                                // go and retrieve the cities for this country:
+                                document.getElementById("new_city").value = e.target.value;
+                                // go and retrieve the Neighbourhood for this city:
                                 LocationModel.GetNeighbourhoods()
                             }}>
                                 <option disabled selected>- Cities -</option>
@@ -102,7 +102,7 @@ var Locations = {
                             <select class="pa2 ba w-100"
                             onchange={(e) => {
                                 LocationModel.LocationUpdate.neighbourhood = e.target.value;
-                                LocationModel.NewLocationUpdate.neighbourhood = e.target.value;
+                                document.getElementById("new_neighbourhood").value = e.target.value;
                             }}>
                                 <option disabled selected>- Neighbourhoods -</option>
                                 {LocationModel.AllNeighbourhoods.length?LocationModel.AllNeighbourhoods.map((location, i) => {
@@ -115,11 +115,11 @@ var Locations = {
                     </div>
                     <div class="">
                         <div class="w-third-ns pa1 dib-ns">
-                            <input type="text" class="pa2 ba b--light-silver w-100" placeholder=""
+                            <input type="text" id="new_country" class="pa2 ba b--light-silver w-100" placeholder=""
                             oninput={m.withAttr("value", (value) =>{
                                 LocationModel.NewLocationUpdate.country = value;
-                            })}
-                            value={LocationModel.LocationUpdate.country}/>
+                                console.log("country: ", LocationModel.NewLocationUpdate.country);
+                            })}/>
                             <div class="tc pv2">
                                 <button class="bg-navy white ba b--transparent br1 shadow-4 pa2 pointer"
                                 onclick={() => {
@@ -129,26 +129,29 @@ var Locations = {
                             </div>
                         </div>
                         <div class="w-third-ns pa1 dib-ns">
-                            <input type="text" class="pa2 ba b--light-silver w-100" placeholder=""
+                            <input type="text" id="new_city" class="pa2 ba b--light-silver w-100" placeholder=""
                             oninput={m.withAttr("value", (value) =>{
                                 LocationModel.NewLocationUpdate.city = value;
-                            })}
-                            value={LocationModel.LocationUpdate.city}/>
+                                console.log("city: ", LocationModel.NewLocationUpdate.city);
+                            })}/>
                             <div class="tc pv2">
                                 <button class="bg-navy white ba b--transparent br1 shadow-4 pa2 pointer"
                                 onclick={() => {
                                     console.log("Update location.");
-                                    LocationModel.UpdateCity();
+                                    LocationModel.UpdateCity().then(() => {
+                                        console.log("city updated")
+                                    }).catch((error) => {
+                                        console.log("update city error: ", error);
+                                    })
                                 }}>Update City</button>
                             </div>
                         </div>
                         <div class="w-third-ns pa1 dib-ns">
-                            <input type="text" class="pa2 ba b--light-silver w-100" placeholder=""
+                            <input type="text" id="new_neighbourhood" class="pa2 ba b--light-silver w-100" placeholder=""
                             oninput={m.withAttr("value", (value) =>{
-                                console.log("value: ", value);
                                 LocationModel.NewLocationUpdate.neighbourhood = value;
-                            })}
-                            value={LocationModel.LocationUpdate.neighbourhood}/>
+                                console.log("neighbourhood: ", LocationModel.NewLocationUpdate.neighbourhood);
+                            })}/>
                             <div class="tc pv2">
                                 <button class="bg-navy white ba b--transparent br1 shadow-4 pa2 pointer"
                                 onclick={() => {
