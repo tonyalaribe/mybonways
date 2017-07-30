@@ -2,7 +2,7 @@ import m from "mithril";
 import localforage from "localforage";
 import { Analytics } from "../models/analytics.js";
 import { MerchantModel } from "../models/merchant.js";
-import { menus } from "../models/menus.js";
+import { locale } from "../models/locale.js";
 import { isEmptyObject } from "../../util/utils.js";
 
 var slideout;
@@ -11,7 +11,7 @@ var MenuComponent = {
 	view: function() {
 		return (
 			<div class="">
-				{menus.map(function(menuItem, i) {
+				{locale[navigator.language]?locale[navigator.language].map(function(menuItem, i) {
 					return (
 						<a
 							class="db pa2 bb b--light-gray hover-bg-light-gray link navy "
@@ -19,7 +19,18 @@ var MenuComponent = {
 							oncreate={m.route.link}
 							key={i}
 						>
-							{menuItem.title}
+							{menuItem.title.toLocaleString(navigator.language)}
+						</a>
+					);
+				}):locale["en-US"].map(function(menuItem, i) {
+					return (
+						<a
+							class="db pa2 bb b--light-gray hover-bg-light-gray link navy "
+							href={menuItem.href}
+							oncreate={m.route.link}
+							key={i}
+						>
+							{menuItem.title.toLocaleString(navigator.language)}
 						</a>
 					);
 				})}

@@ -2,14 +2,26 @@ import m from "mithril";
 import localforage from "localforage";
 import { Analytics } from "../models/analytics.js";
 import { AdminModel } from "../models/admin.js";
-import { menus } from "../models/menus.js";
+import { locale } from "../models/locale.js";
 
 var slideout;
 var MenuComponent = {
 	view: function() {
+		console.log("nav : ", navigator.language)
 		return (
-			<div class="">
-				{menus.map(function(menuItem, i) {
+			<div class="pa1">
+				{locale[navigator.language]?locale[navigator.language].map(function(menuItem, i) {
+					return (
+						<a
+							class="db pa2 bb b--light-gray hover-bg-light-gray link navy "
+							href={menuItem.href}
+							oncreate={m.route.link}
+							key={i}
+						>
+							{menuItem.title.toLocaleString(navigator.language)}
+						</a>
+					);
+				}):locale["en-US"].map(function(menuItem, i) {
 					return (
 						<a
 							class="db pa2 bb b--light-gray hover-bg-light-gray link navy "

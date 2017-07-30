@@ -5,6 +5,7 @@ import { getCookie } from "../../util/cookie.js";
 import tingle from "tingle.js";
 import { settings } from "../../merchant/models/settings.js";
 import { isEmptyObject } from "../../util/utils.js";
+import { locale } from '../models/locale.js';
 import iziToast from 'iziToast';
 
 window.setLocation = function() {
@@ -248,7 +249,7 @@ var searchNav = {
 									}
 									oncreate={m.route.link}
 								>
-									Map
+									{locale[navigator.language]?locale[navigator.language].Map:locale["en-US"].Map}
 								</a>
 							</div>
 							<div class="flex flex-auto justify-center pa1 tc">
@@ -261,7 +262,7 @@ var searchNav = {
 									}
 									oncreate={m.route.link}
 								>
-									Hot
+									{locale[navigator.language]?locale[navigator.language].Hot:locale["en-US"].Hot}
 								</a>
 							</div>
 							<div class="flex flex-auto justify-center pa1 tc">
@@ -274,7 +275,7 @@ var searchNav = {
 									}
 									oncreate={m.route.link}
 								>
-									Categories
+									{locale[navigator.language]?locale[navigator.language].Categories:locale["en-US"].Categories}
 								</a>
 							</div>
 						</div>
@@ -340,7 +341,7 @@ var searchNav = {
 										}
 										oncreate={m.route.link}
 									>
-										Map
+										{locale[navigator.language]?locale[navigator.language].Map:locale["en-US"].Map}
 									</a>
 								</div>
 								<div class=" pa1 tc dib">
@@ -354,7 +355,7 @@ var searchNav = {
 										}
 										oncreate={m.route.link}
 									>
-										Hot
+										{locale[navigator.language]?locale[navigator.language].Hot:locale["en-US"].Hot}
 									</a>
 								</div>
 								<div class=" pa1 tc dib">
@@ -368,7 +369,7 @@ var searchNav = {
 										}
 										oncreate={m.route.link}
 									>
-										Categories
+										{locale[navigator.language]?locale[navigator.language].Categories:locale["en-US"].Categories}
 									</a>
 								</div>
 							</div>
